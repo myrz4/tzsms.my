@@ -1,0 +1,1206 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Taska Zurah — Student Attendance &amp; Management for Taskas</title>
+  <meta name="description" content="Automate attendance with NFC/QR, manage fees and parent communication. Real-time sync, secure cloud storage, and easy reporting." />
+  <meta name="keywords" content="preschool attendance, NFC attendance, childcare management, billing for taska, parent app attendance" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+  <style>
+    /* ===== CSS RESET & VARIABLES ===== */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --primary: #1a56db;
+      --primary-dark: #1240a8;
+      --primary-light: #e8f0fe;
+      --accent: #059669;
+      --accent-light: #d1fae5;
+      --warning: #f59e0b;
+      --danger: #ef4444;
+      --text: #111827;
+      --text-muted: #6b7280;
+      --text-light: #9ca3af;
+      --border: #e5e7eb;
+      --bg: #ffffff;
+      --bg-alt: #f8fafc;
+      --bg-dark: #0f172a;
+      --radius: 12px;
+      --radius-lg: 20px;
+      --shadow: 0 4px 6px -1px rgba(0,0,0,.07), 0 2px 4px -2px rgba(0,0,0,.05);
+      --shadow-md: 0 10px 15px -3px rgba(0,0,0,.08), 0 4px 6px -4px rgba(0,0,0,.05);
+      --shadow-lg: 0 25px 50px -12px rgba(0,0,0,.15);
+      --transition: .2s ease;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Inter', system-ui, sans-serif;
+      color: var(--text);
+      background: var(--bg);
+      line-height: 1.6;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    /* ===== UTILITIES ===== */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+    .section { padding: 96px 0; }
+    .section-alt { background: var(--bg-alt); }
+    .section-dark { background: var(--bg-dark); color: #fff; }
+
+    .section-label {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: .8rem; font-weight: 600; letter-spacing: .08em;
+      text-transform: uppercase; color: var(--primary);
+      background: var(--primary-light); padding: 4px 12px;
+      border-radius: 999px; margin-bottom: 16px;
+    }
+    .section-dark .section-label { background: rgba(255,255,255,.1); color: #93c5fd; }
+
+    h1 { font-size: clamp(2.4rem, 5vw, 3.8rem); font-weight: 900; line-height: 1.1; letter-spacing: -.03em; }
+    h2 { font-size: clamp(1.8rem, 3.5vw, 2.6rem); font-weight: 800; line-height: 1.2; letter-spacing: -.02em; }
+    h3 { font-size: 1.2rem; font-weight: 700; }
+    p { color: var(--text-muted); }
+    .section-dark p { color: #94a3b8; }
+
+    .text-center { text-align: center; }
+    .mb-4 { margin-bottom: 16px; }
+    .mb-6 { margin-bottom: 24px; }
+    .mb-8 { margin-bottom: 32px; }
+    .mb-12 { margin-bottom: 48px; }
+    .mt-4 { margin-top: 16px; }
+    .mt-8 { margin-top: 32px; }
+    .mt-12 { margin-top: 48px; }
+
+    /* ===== BUTTONS ===== */
+    .btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 14px 28px; border-radius: var(--radius); border: 2px solid transparent;
+      font-size: .95rem; font-weight: 600; cursor: pointer;
+      text-decoration: none; transition: var(--transition);
+      white-space: nowrap;
+    }
+    .btn-primary {
+      background: var(--primary); color: #fff;
+      box-shadow: 0 4px 14px rgba(26,86,219,.35);
+    }
+    .btn-primary:hover { background: var(--primary-dark); transform: translateY(-1px); box-shadow: 0 6px 20px rgba(26,86,219,.45); }
+    .btn-outline {
+      background: transparent; color: var(--primary);
+      border-color: var(--primary);
+    }
+    .btn-outline:hover { background: var(--primary-light); }
+    .btn-white {
+      background: #fff; color: var(--primary);
+      box-shadow: 0 4px 14px rgba(0,0,0,.12);
+    }
+    .btn-white:hover { background: #f0f4ff; transform: translateY(-1px); }
+    .btn-outline-white {
+      background: transparent; color: #fff;
+      border-color: rgba(255,255,255,.5);
+    }
+    .btn-outline-white:hover { background: rgba(255,255,255,.1); border-color: #fff; }
+    .btn-lg { padding: 16px 36px; font-size: 1.05rem; border-radius: 14px; }
+    .btn-icon { width: 36px; height: 36px; display: inline-flex; align-items: center; justify-content: center; }
+
+    /* ===== NAVBAR ===== */
+    .navbar {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,.9); backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+    }
+    .navbar-inner {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 68px;
+    }
+    .logo {
+      display: flex; align-items: center; gap: 10px;
+      text-decoration: none; font-weight: 800; font-size: 1.2rem; color: var(--text);
+    }
+    .logo-icon {
+      width: 38px; height: 38px; border-radius: 10px;
+      background: linear-gradient(135deg, var(--primary), #6366f1);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1.1rem; font-weight: 900; letter-spacing: -.05em;
+    }
+    .nav-links {
+      display: flex; align-items: center; gap: 4px; list-style: none;
+    }
+    .nav-links a {
+      text-decoration: none; font-size: .9rem; font-weight: 500; color: var(--text-muted);
+      padding: 6px 14px; border-radius: 8px; transition: var(--transition);
+    }
+    .nav-links a:hover { color: var(--text); background: var(--bg-alt); }
+    .nav-cta { display: flex; align-items: center; gap: 12px; }
+
+    @media (max-width: 768px) {
+      .nav-links, .nav-cta .btn-outline { display: none; }
+    }
+
+    /* ===== HERO ===== */
+    .hero {
+      background: linear-gradient(160deg, #f0f4ff 0%, #ffffff 50%, #f0fdf4 100%);
+      padding: 100px 0 80px;
+      overflow: hidden; position: relative;
+    }
+    .hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 80% 60% at 60% -10%, rgba(26,86,219,.08) 0%, transparent 70%),
+                  radial-gradient(ellipse 60% 50% at 10% 80%, rgba(5,150,105,.07) 0%, transparent 70%);
+      pointer-events: none;
+    }
+    .hero-inner {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 64px; align-items: center;
+    }
+    .hero-badge {
+      display: inline-flex; align-items: center; gap: 8px;
+      background: #fff; border: 1px solid var(--border); border-radius: 999px;
+      padding: 6px 16px 6px 6px; font-size: .85rem; font-weight: 500; color: var(--text);
+      margin-bottom: 24px; box-shadow: var(--shadow);
+    }
+    .hero-badge-dot {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: linear-gradient(135deg, var(--accent), #34d399);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: .65rem; font-weight: 700;
+    }
+    .hero h1 { margin-bottom: 20px; color: var(--text); }
+    .hero h1 span { color: var(--primary); }
+    .hero-sub {
+      font-size: 1.15rem; line-height: 1.7; margin-bottom: 36px;
+      color: var(--text-muted); max-width: 500px;
+    }
+    .hero-actions { display: flex; align-items: center; gap: 14px; flex-wrap: wrap; }
+    .hero-stats {
+      display: flex; gap: 32px; margin-top: 48px; padding-top: 36px;
+      border-top: 1px solid var(--border);
+    }
+    .hero-stat-num {
+      font-size: 1.8rem; font-weight: 900; color: var(--text);
+      letter-spacing: -.03em; line-height: 1;
+    }
+    .hero-stat-label { font-size: .82rem; color: var(--text-muted); margin-top: 4px; }
+    .hero-visual {
+      position: relative;
+    }
+    .hero-dashboard {
+      background: #fff; border-radius: 20px; padding: 24px;
+      box-shadow: 0 20px 60px rgba(0,0,0,.12), 0 0 0 1px var(--border);
+      position: relative; z-index: 1;
+    }
+    .dash-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .dash-title { font-size: .9rem; font-weight: 700; }
+    .dash-live {
+      display: flex; align-items: center; gap: 6px;
+      font-size: .75rem; font-weight: 500; color: var(--accent);
+    }
+    .dash-live-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+      animation: pulse 2s infinite;
+    }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .dash-stats { display: grid; grid-template-columns: repeat(3,1fr); gap: 12px; margin-bottom: 20px; }
+    .dash-stat {
+      background: var(--bg-alt); border-radius: 10px; padding: 14px;
+    }
+    .dash-stat-val { font-size: 1.5rem; font-weight: 800; color: var(--text); }
+    .dash-stat-lbl { font-size: .72rem; color: var(--text-muted); margin-top: 2px; }
+    .dash-bar-label { font-size: .78rem; font-weight: 600; margin-bottom: 10px; }
+    .dash-bars { display: flex; gap: 6px; align-items: flex-end; height: 80px; }
+    .dash-bar {
+      flex: 1; border-radius: 6px 6px 0 0;
+      background: linear-gradient(180deg, var(--primary), #6366f1);
+      opacity: .8;
+      transition: opacity .2s;
+    }
+    .dash-bar:hover { opacity: 1; }
+    .dash-tag-row {
+      display: flex; gap: 8px; margin-top: 16px; flex-wrap: wrap;
+    }
+    .dash-tag {
+      font-size: .72rem; font-weight: 600; padding: 4px 10px;
+      border-radius: 999px;
+    }
+    .tag-green { background: var(--accent-light); color: var(--accent); }
+    .tag-blue { background: var(--primary-light); color: var(--primary); }
+    .tag-yellow { background: #fef3c7; color: #d97706; }
+    .float-card {
+      position: absolute; background: #fff; border-radius: 14px;
+      box-shadow: var(--shadow-md); padding: 12px 16px;
+      font-size: .8rem; font-weight: 500; display: flex; align-items: center; gap: 10px;
+      animation: floatY 4s ease-in-out infinite;
+    }
+    @keyframes floatY { 0%,100%{transform:translateY(0)} 50%{transform:translateY(-8px)} }
+    .float-card-1 {
+      top: -24px; right: -20px;
+      animation-delay: 0s;
+    }
+    .float-card-2 {
+      bottom: 20px; left: -28px;
+      animation-delay: 1.5s;
+    }
+    .float-icon {
+      width: 34px; height: 34px; border-radius: 9px;
+      display: flex; align-items: center; justify-content: center; font-size: 1rem;
+    }
+    .float-icon-green { background: var(--accent-light); }
+    .float-icon-blue { background: var(--primary-light); }
+
+    @media (max-width: 900px) {
+      .hero-inner { grid-template-columns: 1fr; }
+      .hero-visual { display: none; }
+      .hero-stats { gap: 24px; }
+    }
+
+    /* ===== TRUST BAR ===== */
+    .trust-bar { padding: 32px 0; border-top: 1px solid var(--border); border-bottom: 1px solid var(--border); }
+    .trust-inner {
+      display: flex; align-items: center; gap: 40px; flex-wrap: wrap; justify-content: center;
+    }
+    .trust-label { font-size: .8rem; font-weight: 600; color: var(--text-light); text-transform: uppercase; letter-spacing: .06em; white-space: nowrap; }
+    .trust-badges { display: flex; align-items: center; gap: 28px; flex-wrap: wrap; justify-content: center; }
+    .trust-badge {
+      display: flex; align-items: center; gap: 8px;
+      font-size: .85rem; font-weight: 600; color: var(--text-muted);
+    }
+    .trust-badge-icon {
+      width: 32px; height: 32px; border-radius: 8px;
+      display: flex; align-items: center; justify-content: center; font-size: .9rem;
+    }
+    .tbi-green { background: var(--accent-light); }
+    .tbi-blue { background: var(--primary-light); }
+    .tbi-yellow { background: #fef3c7; }
+    .tbi-purple { background: #ede9fe; }
+
+    /* ===== BENEFITS ===== */
+    .benefits-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+    }
+    .benefit-card {
+      padding: 28px; border-radius: var(--radius-lg);
+      border: 1px solid var(--border); transition: var(--transition);
+      position: relative; overflow: hidden;
+    }
+    .benefit-card::before {
+      content: ''; position: absolute; inset: 0;
+      background: linear-gradient(135deg, transparent 60%, rgba(26,86,219,.04));
+      pointer-events: none;
+    }
+    .benefit-card:hover { border-color: var(--primary); box-shadow: var(--shadow-md); transform: translateY(-2px); }
+    .benefit-icon {
+      width: 48px; height: 48px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.4rem; margin-bottom: 16px;
+    }
+    .benefit-card h3 { margin-bottom: 8px; color: var(--text); }
+
+    @media (max-width: 768px) { .benefits-grid { grid-template-columns: 1fr; } }
+    @media (min-width: 769px) and (max-width: 1024px) { .benefits-grid { grid-template-columns: repeat(2,1fr); } }
+
+    /* ===== FEATURES ===== */
+    .features-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 28px;
+    }
+    .feature-card {
+      background: #fff; border: 1px solid var(--border); border-radius: var(--radius-lg);
+      padding: 32px 28px; transition: var(--transition);
+    }
+    .feature-card:hover { box-shadow: var(--shadow-md); transform: translateY(-3px); border-color: var(--primary); }
+    .feature-icon {
+      width: 56px; height: 56px; border-radius: 14px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; margin-bottom: 20px;
+    }
+    .feature-card h3 { margin-bottom: 10px; font-size: 1.1rem; }
+    .feature-card p { font-size: .9rem; line-height: 1.65; }
+
+    @media (max-width: 768px) { .features-grid { grid-template-columns: 1fr; } }
+    @media (min-width: 769px) and (max-width: 1024px) { .features-grid { grid-template-columns: repeat(2,1fr); } }
+
+    /* ===== HOW IT WORKS ===== */
+    .how-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 32px; position: relative;
+    }
+    .how-grid::before {
+      content: ''; position: absolute; top: 40px; left: calc(100%/6); right: calc(100%/6);
+      height: 2px; background: linear-gradient(90deg, var(--primary) 0%, var(--accent) 100%);
+      z-index: 0;
+    }
+    .how-card {
+      text-align: center; position: relative; z-index: 1;
+    }
+    .how-step {
+      width: 80px; height: 80px; border-radius: 50%; margin: 0 auto 24px;
+      display: flex; align-items: center; justify-content: center; font-size: 1.8rem;
+      position: relative;
+    }
+    .how-step-num {
+      position: absolute; top: -4px; right: -4px;
+      width: 26px; height: 26px; border-radius: 50%;
+      background: var(--primary); color: #fff;
+      font-size: .72rem; font-weight: 800;
+      display: flex; align-items: center; justify-content: center;
+      border: 3px solid #fff;
+    }
+    .how-card h3 { margin-bottom: 10px; }
+    .how-card p { font-size: .9rem; max-width: 260px; margin: 0 auto; }
+
+    @media (max-width: 768px) {
+      .how-grid { grid-template-columns: 1fr; gap: 40px; }
+      .how-grid::before { display: none; }
+    }
+
+    /* ===== MODULES ===== */
+    .modules-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+    }
+    .module-card {
+      border-radius: var(--radius-lg); padding: 32px 28px;
+      transition: var(--transition); position: relative; overflow: hidden;
+    }
+    .module-card::after {
+      content: ''; position: absolute; bottom: 0; left: 0; right: 0; height: 3px;
+    }
+    .mc-admin { background: linear-gradient(135deg, #eff6ff, #dbeafe); }
+    .mc-admin::after { background: linear-gradient(90deg, var(--primary), #6366f1); }
+    .mc-teacher { background: linear-gradient(135deg, #f0fdf4, #dcfce7); }
+    .mc-teacher::after { background: linear-gradient(90deg, var(--accent), #34d399); }
+    .mc-parent { background: linear-gradient(135deg, #fff7ed, #ffedd5); }
+    .mc-parent::after { background: linear-gradient(90deg, #f97316, #fb923c); }
+    .mc-nfc { background: linear-gradient(135deg, #fef3c7, #fde68a); }
+    .mc-nfc::after { background: linear-gradient(90deg, var(--warning), #fcd34d); }
+    .mc-billing { background: linear-gradient(135deg, #fdf4ff, #f3e8ff); }
+    .mc-billing::after { background: linear-gradient(90deg, #a855f7, #d946ef); }
+    .mc-reports { background: linear-gradient(135deg, #f0fdfa, #ccfbf1); }
+    .mc-reports::after { background: linear-gradient(90deg, #0d9488, #14b8a6); }
+
+    .module-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+    .module-icon { font-size: 2rem; margin-bottom: 16px; }
+    .module-card h3 { margin-bottom: 14px; color: var(--text); }
+    .module-list { list-style: none; display: flex; flex-direction: column; gap: 8px; }
+    .module-list li {
+      font-size: .88rem; color: var(--text-muted);
+      display: flex; align-items: flex-start; gap: 8px;
+    }
+    .module-list li::before {
+      content: '→'; color: var(--primary); font-weight: 700; font-size: .8rem; margin-top: 1px; flex-shrink: 0;
+    }
+
+    @media (max-width: 768px) { .modules-grid { grid-template-columns: 1fr; } }
+    @media (min-width: 769px) and (max-width: 1024px) { .modules-grid { grid-template-columns: repeat(2,1fr); } }
+
+    /* ===== TECH STACK ===== */
+    .tech-grid {
+      display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
+    }
+    .tech-pill {
+      display: flex; align-items: center; gap: 10px;
+      background: rgba(255,255,255,.08); border: 1px solid rgba(255,255,255,.12);
+      border-radius: 999px; padding: 10px 20px; transition: var(--transition);
+    }
+    .tech-pill:hover { background: rgba(255,255,255,.14); border-color: rgba(255,255,255,.25); }
+    .tech-pill-icon { font-size: 1.2rem; }
+    .tech-pill span { font-size: .88rem; font-weight: 500; color: #e2e8f0; }
+
+    .arch-diagram {
+      margin-top: 56px; background: rgba(255,255,255,.04);
+      border: 1px solid rgba(255,255,255,.1); border-radius: var(--radius-lg); padding: 32px;
+    }
+    .arch-title { font-size: .8rem; font-weight: 600; text-transform: uppercase; letter-spacing: .08em; color: #64748b; margin-bottom: 24px; text-align: center; }
+    .arch-layers {
+      display: grid; grid-template-columns: repeat(4,1fr); gap: 16px;
+    }
+    .arch-layer {
+      text-align: center; padding: 20px 12px;
+      background: rgba(255,255,255,.06); border-radius: var(--radius);
+      border: 1px solid rgba(255,255,255,.08);
+    }
+    .arch-layer-icon { font-size: 1.8rem; margin-bottom: 10px; }
+    .arch-layer-title { font-size: .8rem; font-weight: 700; color: #e2e8f0; margin-bottom: 6px; }
+    .arch-layer-desc { font-size: .73rem; color: #64748b; line-height: 1.5; }
+
+    @media (max-width: 768px) { .arch-layers { grid-template-columns: repeat(2,1fr); } }
+
+    /* ===== SECURITY ===== */
+    .security-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 24px;
+    }
+    .security-card {
+      padding: 28px; border-radius: var(--radius-lg); background: #fff;
+      border: 1px solid var(--border); transition: var(--transition);
+    }
+    .security-card:hover { border-color: var(--primary); box-shadow: var(--shadow); }
+    .security-icon { font-size: 1.6rem; margin-bottom: 14px; }
+    .security-card h3 { margin-bottom: 8px; font-size: 1rem; }
+    .security-card p { font-size: .875rem; }
+
+    @media (max-width: 768px) { .security-grid { grid-template-columns: 1fr; } }
+    @media (min-width: 769px) and (max-width: 1024px) { .security-grid { grid-template-columns: repeat(2,1fr); } }
+
+    /* ===== PRICING ===== */
+    .pricing-grid {
+      display: grid; grid-template-columns: repeat(3,1fr); gap: 24px; align-items: start;
+    }
+    .pricing-card {
+      border-radius: var(--radius-lg); padding: 36px 32px;
+      border: 2px solid var(--border); background: #fff; transition: var(--transition);
+      position: relative;
+    }
+    .pricing-card:hover { box-shadow: var(--shadow-md); }
+    .pricing-card.featured {
+      border-color: var(--primary);
+      box-shadow: 0 0 0 4px rgba(26,86,219,.1), var(--shadow-lg);
+    }
+    .pricing-popular {
+      position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+      background: linear-gradient(135deg, var(--primary), #6366f1); color: #fff;
+      font-size: .75rem; font-weight: 700; padding: 4px 16px; border-radius: 999px;
+      white-space: nowrap; letter-spacing: .04em;
+    }
+    .pricing-tier { font-size: .8rem; font-weight: 600; color: var(--primary); text-transform: uppercase; letter-spacing: .08em; margin-bottom: 8px; }
+    .pricing-price { margin: 16px 0 4px; }
+    .pricing-price-main { font-size: 2.6rem; font-weight: 900; letter-spacing: -.04em; color: var(--text); }
+    .pricing-price-unit { font-size: .9rem; color: var(--text-muted); }
+    .pricing-desc { font-size: .875rem; margin-bottom: 28px; }
+    .pricing-features { list-style: none; display: flex; flex-direction: column; gap: 12px; margin-bottom: 32px; }
+    .pricing-features li {
+      display: flex; align-items: flex-start; gap: 10px;
+      font-size: .875rem; color: var(--text-muted);
+    }
+    .pf-check {
+      width: 20px; height: 20px; border-radius: 50%; flex-shrink: 0;
+      display: flex; align-items: center; justify-content: center;
+      font-size: .65rem; background: var(--accent-light); color: var(--accent);
+    }
+
+    @media (max-width: 768px) { .pricing-grid { grid-template-columns: 1fr; } }
+    @media (min-width: 769px) and (max-width: 1024px) { .pricing-grid { grid-template-columns: 1fr; } }
+
+    /* ===== FAQ ===== */
+    .faq-list { max-width: 760px; margin: 0 auto; display: flex; flex-direction: column; gap: 0; }
+    .faq-item {
+      border-bottom: 1px solid var(--border);
+    }
+    .faq-question {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: 22px 0; cursor: pointer; font-weight: 600; font-size: .95rem;
+      color: var(--text); gap: 16px;
+    }
+    .faq-icon {
+      width: 28px; height: 28px; border-radius: 50%; background: var(--bg-alt);
+      display: flex; align-items: center; justify-content: center; flex-shrink: 0;
+      font-size: 1rem; transition: transform .25s; color: var(--primary); font-weight: 700;
+    }
+    .faq-answer {
+      max-height: 0; overflow: hidden; transition: max-height .35s ease, padding .25s;
+      font-size: .9rem; color: var(--text-muted); line-height: 1.7;
+    }
+    .faq-item.open .faq-answer { max-height: 200px; padding-bottom: 18px; }
+    .faq-item.open .faq-icon { transform: rotate(45deg); }
+
+    /* ===== FOOTER CTA ===== */
+    .footer-cta {
+      background: linear-gradient(135deg, var(--primary-dark) 0%, #1a56db 50%, #6366f1 100%);
+      padding: 100px 0; text-align: center; position: relative; overflow: hidden;
+    }
+    .footer-cta::before {
+      content: ''; position: absolute; inset: 0;
+      background: url("data:image/svg+xml,%3Csvg width='60' height='60' viewBox='0 0 60 60' xmlns='http://www.w3.org/2000/svg'%3E%3Cg fill='none' fill-rule='evenodd'%3E%3Cg fill='%23ffffff' fill-opacity='0.03'%3E%3Cpath d='M36 34v-4h-2v4h-4v2h4v4h2v-4h4v-2h-4zm0-30V0h-2v4h-4v2h4v4h2V6h4V4h-4zM6 34v-4H4v4H0v2h4v4h2v-4h4v-2H6zM6 4V0H4v4H0v2h4v4h2V6h4V4H6z'/%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+    }
+    .footer-cta h2 { color: #fff; margin-bottom: 16px; }
+    .footer-cta p { color: rgba(255,255,255,.75); font-size: 1.1rem; margin-bottom: 40px; max-width: 560px; margin-left: auto; margin-right: auto; }
+    .footer-cta-actions { display: flex; align-items: center; justify-content: center; gap: 16px; flex-wrap: wrap; }
+    .footer-cta-note { margin-top: 24px; font-size: .82rem; color: rgba(255,255,255,.5); }
+
+    /* ===== FOOTER ===== */
+    footer {
+      background: #0b1120; color: #94a3b8; padding: 60px 0 32px;
+    }
+    .footer-inner {
+      display: grid; grid-template-columns: 2fr 1fr 1fr 1fr; gap: 40px;
+    }
+    .footer-brand { }
+    .footer-logo {
+      display: flex; align-items: center; gap: 10px;
+      margin-bottom: 16px; font-weight: 800; font-size: 1.1rem; color: #fff;
+      text-decoration: none;
+    }
+    .footer-logo-icon {
+      width: 36px; height: 36px; border-radius: 9px;
+      background: linear-gradient(135deg, var(--primary), #6366f1);
+      display: flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 1rem; font-weight: 900;
+    }
+    .footer-brand p { font-size: .875rem; line-height: 1.6; max-width: 280px; }
+    .footer-col-title { font-size: .8rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: #e2e8f0; margin-bottom: 16px; }
+    .footer-links { list-style: none; display: flex; flex-direction: column; gap: 10px; }
+    .footer-links a { text-decoration: none; font-size: .875rem; color: #64748b; transition: color .2s; }
+    .footer-links a:hover { color: #e2e8f0; }
+    .footer-bottom {
+      margin-top: 48px; padding-top: 24px; border-top: 1px solid #1e293b;
+      display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px;
+    }
+    .footer-bottom-text { font-size: .8rem; color: #475569; }
+    .footer-bottom-links { display: flex; gap: 20px; }
+    .footer-bottom-links a { font-size: .8rem; color: #475569; text-decoration: none; }
+    .footer-bottom-links a:hover { color: #94a3b8; }
+
+    @media (max-width: 768px) {
+      .footer-inner { grid-template-columns: 1fr; gap: 32px; }
+      .footer-bottom { flex-direction: column; align-items: flex-start; }
+    }
+
+    /* ===== SCROLL ANIMATIONS ===== */
+    .fade-up {
+      opacity: 0; transform: translateY(24px);
+      transition: opacity .6s ease, transform .6s ease;
+    }
+    .fade-up.visible { opacity: 1; transform: translateY(0); }
+  </style>
+</head>
+<body>
+
+<!-- ===== NAVBAR ===== -->
+<nav class="navbar">
+  <div class="container">
+    <div class="navbar-inner">
+      <a href="#" class="logo">
+        <div class="logo-icon">TZ</div>
+        <span>Taska Zurah</span>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#features">Features</a></li>
+        <li><a href="#how-it-works">How It Works</a></li>
+        <li><a href="#modules">Modules</a></li>
+        <li><a href="#pricing">Pricing</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <div class="nav-cta">
+        <a href="#demo" class="btn btn-outline">Request Demo</a>
+        <a href="#trial" class="btn btn-primary">Free Trial</a>
+      </div>
+    </div>
+  </div>
+</nav>
+
+<!-- ===== HERO ===== -->
+<section class="hero">
+  <div class="container">
+    <div class="hero-inner">
+      <div class="hero-content">
+        <div class="hero-badge">
+          <div class="hero-badge-dot">✓</div>
+          Smart NFC &amp; QR Attendance for Early Learning Centres
+        </div>
+        <h1>Student Management <span>Made Simple</span> for Taskas</h1>
+        <p class="hero-sub">Real‑time attendance, secure student records, automated invoicing, and parent apps — all in one integrated system built for taskas and preschools.</p>
+        <div class="hero-actions">
+          <a href="#demo" class="btn btn-primary btn-lg" id="demo">
+            <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M15 10l4.553-2.277A1 1 0 0121 8.65V15.35a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+            Request a Demo
+          </a>
+          <a href="#trial" class="btn btn-outline btn-lg" id="trial">
+            Start 14-Day Free Trial
+          </a>
+        </div>
+        <div class="hero-stats">
+          <div>
+            <div class="hero-stat-num">NFC +</div>
+            <div class="hero-stat-label">QR &amp; Manual Check-in</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">Real-time</div>
+            <div class="hero-stat-label">Firestore Sync</div>
+          </div>
+          <div>
+            <div class="hero-stat-num">5 Roles</div>
+            <div class="hero-stat-label">Admin to Parent</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-dashboard">
+          <div class="dash-header">
+            <div class="dash-title">📊 Admin Dashboard</div>
+            <div class="dash-live"><div class="dash-live-dot"></div> Live</div>
+          </div>
+          <div class="dash-stats">
+            <div class="dash-stat">
+              <div class="dash-stat-val">42</div>
+              <div class="dash-stat-lbl">Present Today</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-stat-val">3</div>
+              <div class="dash-stat-lbl">Absent</div>
+            </div>
+            <div class="dash-stat">
+              <div class="dash-stat-val">RM 2.4k</div>
+              <div class="dash-stat-lbl">Invoiced</div>
+            </div>
+          </div>
+          <div class="dash-bar-label">Weekly Attendance</div>
+          <div class="dash-bars">
+            <div class="dash-bar" style="height:60%"></div>
+            <div class="dash-bar" style="height:80%"></div>
+            <div class="dash-bar" style="height:70%"></div>
+            <div class="dash-bar" style="height:95%"></div>
+            <div class="dash-bar" style="height:85%"></div>
+          </div>
+          <div class="dash-tag-row">
+            <span class="dash-tag tag-green">✓ NFC Active</span>
+            <span class="dash-tag tag-blue">⚡ Synced</span>
+            <span class="dash-tag tag-yellow">2 Pending Pickups</span>
+          </div>
+        </div>
+        <div class="float-card float-card-1">
+          <div class="float-icon float-icon-green">✅</div>
+          <div>
+            <div style="font-weight:700;font-size:.82rem">Ahmad Haris checked in</div>
+            <div style="color:#6b7280;font-size:.72rem">via NFC · just now</div>
+          </div>
+        </div>
+        <div class="float-card float-card-2">
+          <div class="float-icon float-icon-blue">🧾</div>
+          <div>
+            <div style="font-weight:700;font-size:.82rem">Invoice sent to 8 parents</div>
+            <div style="color:#6b7280;font-size:.72rem">Auto-generated · 9:00 AM</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TRUST BAR ===== -->
+<div class="trust-bar">
+  <div class="container">
+    <div class="trust-inner">
+      <span class="trust-label">Trusted by</span>
+      <div class="trust-badges">
+        <div class="trust-badge"><div class="trust-badge-icon tbi-green">🔒</div> Encrypted &amp; Secure</div>
+        <div class="trust-badge"><div class="trust-badge-icon tbi-blue">☁️</div> Cloud-Backed</div>
+        <div class="trust-badge"><div class="trust-badge-icon tbi-yellow">📋</div> Audit Trail</div>
+        <div class="trust-badge"><div class="trust-badge-icon tbi-purple">📶</div> Offline Resilient</div>
+        <div class="trust-badge"><div class="trust-badge-icon tbi-green">🇲🇾</div> Malaysia Ready</div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<!-- ===== BENEFITS ===== -->
+<section class="section" id="benefits">
+  <div class="container">
+    <div class="text-center mb-12">
+      <span class="section-label">Why Taska Zurah</span>
+      <h2 class="mb-4">Everything your centre needs,<br>nothing it doesn't</h2>
+      <p style="max-width:520px;margin:0 auto">Purpose-built for Malaysian taskas and preschools — reducing admin overhead and bringing parents closer to their children's daily routine.</p>
+    </div>
+    <div class="benefits-grid">
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon" style="background:#e0f2fe">🎯</div>
+        <h3>100% Attendance Accuracy</h3>
+        <p>Eliminates manual errors with NFC tag readers, QR scanning, and teacher app check-in — all with automatic timestamps.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon" style="background:#d1fae5">⏱️</div>
+        <h3>Save Hours Every Week</h3>
+        <p>Automated billing, PDF receipts, and scheduled reports mean your admin team spends less time on paperwork.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon" style="background:#fef3c7">👨‍👩‍👧</div>
+        <h3>Parents Stay in the Loop</h3>
+        <p>Instant push notifications for arrivals and absences. Parents can authorize pickups and view invoices from their phones.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon" style="background:#fce7f3">📜</div>
+        <h3>Built-in Compliance</h3>
+        <p>Tamper-evident attendance logs with device, operator, and timestamp metadata. Exportable audit trails for inspections.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon" style="background:#ede9fe">🏗️</div>
+        <h3>Scales With You</h3>
+        <p>Cloud-backed Firestore sync supports single-centre day-cares up to multi-site deployments with no infrastructure changes.</p>
+      </div>
+      <div class="benefit-card fade-up">
+        <div class="benefit-icon" style="background:#ecfdf5">📡</div>
+        <h3>Works Offline Too</h3>
+        <p>Local buffering on NFC readers and devices. Events queue locally and sync automatically when connectivity is restored.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== HOW IT WORKS ===== -->
+<section class="section section-alt" id="how-it-works">
+  <div class="container">
+    <div class="text-center mb-12">
+      <span class="section-label">How It Works</span>
+      <h2 class="mb-4">Up and running in three steps</h2>
+      <p style="max-width:460px;margin:0 auto">From first enrollment to real-time parent notifications — the full workflow in under a minute.</p>
+    </div>
+    <div class="how-grid">
+      <div class="how-card fade-up">
+        <div class="how-step" style="background:#dbeafe">
+          🧒
+          <div class="how-step-num">1</div>
+        </div>
+        <h3>Enroll</h3>
+        <p>Register children and guardians, upload profiles, and assign NFC tags or QR codes from the Admin Dashboard.</p>
+      </div>
+      <div class="how-card fade-up">
+        <div class="how-step" style="background:#dcfce7">
+          📲
+          <div class="how-step-num">2</div>
+        </div>
+        <h3>Capture</h3>
+        <p>Child arrives → tap NFC reader / scan QR / teacher checks in via app. The event is saved instantly with timestamp and source.</p>
+      </div>
+      <div class="how-card fade-up">
+        <div class="how-step" style="background:#fef3c7">
+          ⚡
+          <div class="how-step-num">3</div>
+        </div>
+        <h3>Sync &amp; Act</h3>
+        <p>Events sync to Firestore in real-time. Apps update instantly; automated invoices and parent alerts trigger without manual input.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== CORE FEATURES ===== -->
+<section class="section" id="features">
+  <div class="container">
+    <div class="text-center mb-12">
+      <span class="section-label">Core Features</span>
+      <h2 class="mb-4">Everything in one platform</h2>
+      <p style="max-width:500px;margin:0 auto">No juggling between spreadsheets, WhatsApp, and manual registers — every function your taska needs is right here.</p>
+    </div>
+    <div class="features-grid">
+      <div class="feature-card fade-up">
+        <div class="feature-icon" style="background:#dbeafe">📡</div>
+        <h3>Smart Attendance Capture</h3>
+        <p>NFC tag readers, QR scanning, teacher app check-in, and manual corrections with full audit metadata on every event.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon" style="background:#d1fae5">🧾</div>
+        <h3>Billing &amp; Invoicing</h3>
+        <p>Recurring fee schedules, ad-hoc charges, auto-generated PDF invoices, and exportable billing ledgers. Stripe payment links included.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon" style="background:#fce7f3">📱</div>
+        <h3>Parent App</h3>
+        <p>Real-time attendance feed, push notifications, secure pickup authorization, invoice view, and two-way messaging — on iOS &amp; Android.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon" style="background:#fef3c7">📊</div>
+        <h3>Reports &amp; Analytics</h3>
+        <p>Daily, weekly, and monthly attendance summaries. Utilization charts, billing reports, and one-click CSV/PDF exports.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon" style="background:#ede9fe">🔧</div>
+        <h3>Hardware Integration</h3>
+        <p>ESP32 IoT NFC readers, USB/serial NFC devices, or smartphone scanning — plug in the hardware you already have or order ours.</p>
+      </div>
+      <div class="feature-card fade-up">
+        <div class="feature-icon" style="background:#ecfdf5">🔐</div>
+        <h3>Security &amp; Roles</h3>
+        <p>Five configurable roles (Admin, Operator, Teacher, Auditor, Parent) with Firestore per-role rules, TLS, and immutable event logs.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== MODULES ===== -->
+<section class="section section-alt" id="modules">
+  <div class="container">
+    <div class="text-center mb-12">
+      <span class="section-label">App Modules</span>
+      <h2 class="mb-4">One system, every role covered</h2>
+      <p style="max-width:520px;margin:0 auto">Each app and module is purpose-built for the person using it — from the centre owner to the parent on the go.</p>
+    </div>
+    <div class="modules-grid">
+      <div class="module-card mc-admin fade-up">
+        <div class="module-icon">🖥️</div>
+        <h3>Admin Dashboard</h3>
+        <ul class="module-list">
+          <li>Manage centres, staff, and fee structures</li>
+          <li>Generate and send invoices in bulk</li>
+          <li>Full reporting suite with export options</li>
+          <li>Security settings, roles, and audit logs</li>
+        </ul>
+      </div>
+      <div class="module-card mc-teacher fade-up">
+        <div class="module-icon">👩‍🏫</div>
+        <h3>Teacher App</h3>
+        <ul class="module-list">
+          <li>Quick class roll with one-tap check-in</li>
+          <li>Manual attendance adjustments with notes</li>
+          <li>Incident and observation logging</li>
+          <li>Daily class summary at a glance</li>
+        </ul>
+      </div>
+      <div class="module-card mc-parent fade-up">
+        <div class="module-icon">👨‍👩‍👦</div>
+        <h3>Parent App</h3>
+        <ul class="module-list">
+          <li>Live attendance feed and absence alerts</li>
+          <li>Secure pickup authorization requests</li>
+          <li>View and pay invoices in-app</li>
+          <li>Direct messaging with teachers</li>
+        </ul>
+      </div>
+      <div class="module-card mc-nfc fade-up">
+        <div class="module-icon">📟</div>
+        <h3>NFC / Scanner</h3>
+        <ul class="module-list">
+          <li>ESP32 reader management and health monitoring</li>
+          <li>Firmware OTA update support</li>
+          <li>Offline queue with auto-sync on reconnect</li>
+          <li>USB/serial and Wi-Fi reader support</li>
+        </ul>
+      </div>
+      <div class="module-card mc-billing fade-up">
+        <div class="module-icon">💳</div>
+        <h3>Billing Engine</h3>
+        <ul class="module-list">
+          <li>Flexible fee matrix per child/class</li>
+          <li>Auto-invoice scheduler (monthly/ad-hoc)</li>
+          <li>Payment reconciliation dashboard</li>
+          <li>Stripe / hosted checkout integration</li>
+        </ul>
+      </div>
+      <div class="module-card mc-reports fade-up">
+        <div class="module-icon">📈</div>
+        <h3>Reporting &amp; Exports</h3>
+        <ul class="module-list">
+          <li>Custom report builder by date, class, or child</li>
+          <li>Scheduled email exports (daily/weekly)</li>
+          <li>Audit-grade immutable export for regulators</li>
+          <li>CSV and PDF in one click</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== TECH STACK ===== -->
+<section class="section section-dark" id="tech">
+  <div class="container">
+    <div class="text-center mb-12">
+      <span class="section-label">Technical Architecture</span>
+      <h2 class="mb-4" style="color:#fff">Built on enterprise-grade,<br>battle-tested infrastructure</h2>
+      <p style="max-width:500px;margin:0 auto">Every component is chosen for reliability, security, and the ability to scale from one classroom to many centres.</p>
+    </div>
+    <div class="tech-grid">
+      <div class="tech-pill"><div class="tech-pill-icon">🔥</div><span>Google Firestore</span></div>
+      <div class="tech-pill"><div class="tech-pill-icon">🔑</div><span>Firebase Auth</span></div>
+      <div class="tech-pill"><div class="tech-pill-icon">⚙️</div><span>Cloud Functions</span></div>
+      <div class="tech-pill"><div class="tech-pill-icon">🗂️</div><span>Firebase Storage</span></div>
+      <div class="tech-pill"><div class="tech-pill-icon">🔔</div><span>FCM Notifications</span></div>
+      <div class="tech-pill"><div class="tech-pill-icon">🖥️</div><span>JavaFX 21 Desktop</span></div>
+      <div class="tech-pill"><div class="tech-pill-icon">📱</div><span>Flutter Mobile</span></div>
+      <div class="tech-pill"><div class="tech-pill-icon">🤖</div><span>ESP32 / IoT NFC</span></div>
+      <div class="tech-pill"><div class="tech-pill-icon">💳</div><span>Stripe Payments</span></div>
+      <div class="tech-pill"><div class="tech-pill-icon">📧</div><span>Email / SMS Gateway</span></div>
+    </div>
+    <div class="arch-diagram">
+      <div class="arch-title">Architecture Layers</div>
+      <div class="arch-layers">
+        <div class="arch-layer">
+          <div class="arch-layer-icon">🖥️📱</div>
+          <div class="arch-layer-title">Frontends</div>
+          <div class="arch-layer-desc">JavaFX Admin desktop · Flutter Teacher &amp; Parent apps · Optional web views</div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-layer-icon">☁️</div>
+          <div class="arch-layer-title">Backend</div>
+          <div class="arch-layer-desc">Firestore primary datastore · Cloud Functions for server logic · REST API endpoints</div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-layer-icon">🔒🔔</div>
+          <div class="arch-layer-title">Auth &amp; Messaging</div>
+          <div class="arch-layer-desc">Firebase Auth with role claims · FCM push notifications · Email &amp; SMS providers</div>
+        </div>
+        <div class="arch-layer">
+          <div class="arch-layer-icon">📟</div>
+          <div class="arch-layer-title">Hardware</div>
+          <div class="arch-layer-desc">ESP32 IoT NFC readers · USB NFC devices · Wi-Fi REST or local proxy publish</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== SECURITY ===== -->
+<section class="section" id="security">
+  <div class="container">
+    <div class="text-center mb-12">
+      <span class="section-label">Security &amp; Compliance</span>
+      <h2 class="mb-4">Your data stays yours — always</h2>
+      <p style="max-width:520px;margin:0 auto">Runs under your own Firebase project. Every record is encrypted, every access is logged, and every export is auditable.</p>
+    </div>
+    <div class="security-grid">
+      <div class="security-card fade-up">
+        <div class="security-icon">🛡️</div>
+        <h3>Role-Based Access Control</h3>
+        <p>Fine-grained per-role permissions using Firestore Security Rules. Least-privilege API keys ensure no user sees more than they should.</p>
+      </div>
+      <div class="security-card fade-up">
+        <div class="security-icon">🔏</div>
+        <h3>Encryption End-to-End</h3>
+        <p>TLS in transit for all API calls and app traffic. Cloud provider at-rest encryption protects stored data and exported files.</p>
+      </div>
+      <div class="security-card fade-up">
+        <div class="security-icon">📋</div>
+        <h3>Immutable Audit Trail</h3>
+        <p>Every attendance event records who, when, from which device, and via which source. Tamper-evident and exportable for regulators.</p>
+      </div>
+      <div class="security-card fade-up">
+        <div class="security-icon">🏠</div>
+        <h3>Data Ownership</h3>
+        <p>Deployed under your own Firebase project and service account. We never co-host your children's data on a shared environment.</p>
+      </div>
+      <div class="security-card fade-up">
+        <div class="security-icon">📦</div>
+        <h3>Automated Backups</h3>
+        <p>Scheduled daily and weekly Firestore exports to Cloud Storage. Cloud Logging monitors function health and device telemetry.</p>
+      </div>
+      <div class="security-card fade-up">
+        <div class="security-icon">⚖️</div>
+        <h3>Regulatory Compliance</h3>
+        <p>Configurable data retention periods and exportable records to satisfy local childcare regulatory requirements and audits.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== PRICING ===== -->
+<section class="section section-alt" id="pricing">
+  <div class="container">
+    <div class="text-center mb-12">
+      <span class="section-label">Pricing</span>
+      <h2 class="mb-4">Simple, transparent pricing</h2>
+      <p style="max-width:460px;margin:0 auto">Start small and scale up. No hidden fees. Cancel anytime on the cloud plan.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card fade-up">
+        <div class="pricing-tier">Starter</div>
+        <h3>Per-Child Monthly</h3>
+        <div class="pricing-price">
+          <span class="pricing-price-main">RM 3</span>
+          <span class="pricing-price-unit"> / child / month</span>
+        </div>
+        <p class="pricing-desc">Perfect for small centres getting started with digital attendance.</p>
+        <ul class="pricing-features">
+          <li><div class="pf-check">✓</div> NFC &amp; QR attendance capture</li>
+          <li><div class="pf-check">✓</div> Basic parent notifications</li>
+          <li><div class="pf-check">✓</div> Monthly billing &amp; PDF invoices</li>
+          <li><div class="pf-check">✓</div> Standard reports &amp; CSV export</li>
+          <li><div class="pf-check">✓</div> Up to 60 enrolled children</li>
+        </ul>
+        <a href="#trial" class="btn btn-outline" style="width:100%;justify-content:center">Start Free Trial</a>
+      </div>
+
+      <div class="pricing-card featured fade-up">
+        <div class="pricing-popular">Most Popular</div>
+        <div class="pricing-tier">On-Premise License</div>
+        <h3>Centre License</h3>
+        <div class="pricing-price">
+          <span class="pricing-price-main">RM 2,400</span>
+          <span class="pricing-price-unit"> / year</span>
+        </div>
+        <p class="pricing-desc">Full-featured installation under your own infrastructure. Ideal for established centres.</p>
+        <ul class="pricing-features">
+          <li><div class="pf-check">✓</div> Everything in Starter</li>
+          <li><div class="pf-check">✓</div> Unlimited enrolled children</li>
+          <li><div class="pf-check">✓</div> Admin + Teacher + Parent apps</li>
+          <li><div class="pf-check">✓</div> Hardware setup assistance</li>
+          <li><div class="pf-check">✓</div> Priority email &amp; phone support</li>
+        </ul>
+        <a href="#demo" class="btn btn-primary" style="width:100%;justify-content:center">Request a Demo</a>
+      </div>
+
+      <div class="pricing-card fade-up">
+        <div class="pricing-tier">Enterprise</div>
+        <h3>Custom Deployment</h3>
+        <div class="pricing-price">
+          <span class="pricing-price-main">Custom</span>
+        </div>
+        <p class="pricing-desc">Multi-site deployments, custom integrations, SLA, and dedicated onboarding for chains and franchise operators.</p>
+        <ul class="pricing-features">
+          <li><div class="pf-check">✓</div> Multi-centre management</li>
+          <li><div class="pf-check">✓</div> Custom SIS / ERP integrations</li>
+          <li><div class="pf-check">✓</div> Dedicated account manager</li>
+          <li><div class="pf-check">✓</div> SLA-backed uptime guarantee</li>
+          <li><div class="pf-check">✓</div> Custom branding &amp; white-label</li>
+        </ul>
+        <a href="mailto:hello@taskazurah.com" class="btn btn-outline" style="width:100%;justify-content:center">Contact Sales</a>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FAQ ===== -->
+<section class="section" id="faq">
+  <div class="container">
+    <div class="text-center mb-12">
+      <span class="section-label">FAQ</span>
+      <h2 class="mb-4">Common questions answered</h2>
+    </div>
+    <div class="faq-list">
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          How long does onboarding take?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">Most centres are fully operational within 1–3 business days. We walk you through Firebase project setup, app installation, and NFC reader configuration. Bulk student import via CSV speeds up enrollment significantly.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          What hardware do I need?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">At minimum, you need a smartphone to run the Teacher or Admin app — that gives you QR scanning and manual check-in. For NFC, you'll need an ESP32-class reader module with a compatible NFC reader chip and Wi-Fi connectivity. We provide a recommended parts list and can assist with hardware setup.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Can I export my data at any time?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">Yes. You can export attendance, billing, and student records as CSV or PDF at any time from the Admin Dashboard. Scheduled automated exports (daily/weekly) can be sent to your email or saved to Cloud Storage. Since the system runs under your own Firebase project, you also have direct access to Firestore.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          What happens when the internet goes down?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">NFC readers and device apps buffer events locally. Attendance is still recorded without interruption. Once connectivity is restored, all queued events sync to Firestore automatically with their original timestamps intact.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Is the system suitable for multiple branches?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">Yes. The architecture supports multi-centre deployments out of the box. Each centre can be managed independently or aggregated in the Admin Dashboard. For franchise operators with custom requirements, our Enterprise plan includes dedicated onboarding and custom configuration.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          How are parents notified?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">Parents receive push notifications via FCM on their mobile app when their child checks in or out, when they're marked absent, and when a new invoice is generated. Email notifications are also supported as a fallback. All notification settings are configurable per centre.</div>
+      </div>
+      <div class="faq-item">
+        <div class="faq-question" onclick="toggleFaq(this)">
+          Where is my data stored?
+          <div class="faq-icon">+</div>
+        </div>
+        <div class="faq-answer">All data is stored in your own Google Firebase project — we do not host or share a multi-tenant database. You own the data and can choose the Firebase data centre region. This also means you can independently audit, backup, or migrate your data at any time.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ===== FOOTER CTA ===== -->
+<div class="footer-cta">
+  <div class="container" style="position:relative;z-index:1">
+    <h2>Ready to modernise your taska?</h2>
+    <p>See Taska Zurah in action with a live demo, or start your 14-day free trial — no credit card required.</p>
+    <div class="footer-cta-actions">
+      <a href="#demo" class="btn btn-white btn-lg">
+        <svg width="18" height="18" fill="none" viewBox="0 0 24 24"><path stroke="currentColor" stroke-width="2" stroke-linecap="round" d="M15 10l4.553-2.277A1 1 0 0121 8.65V15.35a1 1 0 01-1.447.894L15 14M3 8a2 2 0 012-2h8a2 2 0 012 2v8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z"/></svg>
+        Request a Demo
+      </a>
+      <a href="#trial" class="btn btn-outline-white btn-lg">Start Free Trial — 14 Days</a>
+      <a href="mailto:hello@taskazurah.com" class="btn btn-outline-white btn-lg">Book Hardware Setup</a>
+    </div>
+    <p class="footer-cta-note">No credit card required · Cancel anytime · Setup assistance included</p>
+  </div>
+</div>
+
+<!-- ===== FOOTER ===== -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <div class="footer-brand">
+        <a href="#" class="footer-logo">
+          <div class="footer-logo-icon">TZ</div>
+          Taska Zurah
+        </a>
+        <p>Smart NFC &amp; QR attendance, automated billing, and parent communication — purpose-built for Malaysian taskas and preschools.</p>
+      </div>
+      <div>
+        <div class="footer-col-title">Product</div>
+        <ul class="footer-links">
+          <li><a href="#features">Features</a></li>
+          <li><a href="#modules">Modules</a></li>
+          <li><a href="#tech">Tech Stack</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Company</div>
+        <ul class="footer-links">
+          <li><a href="#">About Us</a></li>
+          <li><a href="#">Blog</a></li>
+          <li><a href="#">Documentation</a></li>
+          <li><a href="mailto:hello@taskazurah.com">Contact</a></li>
+        </ul>
+      </div>
+      <div>
+        <div class="footer-col-title">Get Started</div>
+        <ul class="footer-links">
+          <li><a href="#demo">Request Demo</a></li>
+          <li><a href="#trial">Free Trial</a></li>
+          <li><a href="mailto:hello@taskazurah.com">Book Setup</a></li>
+          <li><a href="#">API Docs</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p class="footer-bottom-text">© 2025 Taska Zurah. All rights reserved.</p>
+      <div class="footer-bottom-links">
+        <a href="#">Privacy Policy</a>
+        <a href="#">Terms of Service</a>
+        <a href="#">Security</a>
+      </div>
+    </div>
+  </div>
+</footer>
+
+<!-- ===== SCRIPTS ===== -->
+<script>
+  // FAQ accordion
+  function toggleFaq(btn) {
+    var item = btn.parentElement;
+    var isOpen = item.classList.contains('open');
+    document.querySelectorAll('.faq-item.open').forEach(function(el) { el.classList.remove('open'); });
+    if (!isOpen) item.classList.add('open');
+  }
+
+  // Scroll fade-up animation
+  var observer = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting) {
+        e.target.classList.add('visible');
+        observer.unobserve(e.target);
+      }
+    });
+  }, { threshold: 0.12 });
+
+  document.querySelectorAll('.fade-up').forEach(function(el) {
+    observer.observe(el);
+  });
+</script>
+
+</body>
+</html>
