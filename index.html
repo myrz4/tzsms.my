@@ -3,14 +3,14 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>TZSMS | Taska Zurah Smart Attendance &amp; Management System</title>
-  <meta name="description" content="Taska Zurah Student Management System brings NFC and QR attendance, student records, billing, reports, and parent communication into one connected platform for taskas and preschools." />
+  <title>Smart Childcare System - NFC-Based Student Management System</title>
+  <meta name="description" content="Smart Childcare System - NFC-Based Student Management System brings NFC and QR attendance, student records, billing, reports, and parent communication into one connected platform for childcare centres and preschools." />
   <meta name="theme-color" content="#2E8B57" />
-  <meta property="og:title" content="TZSMS | Taska Zurah Smart Attendance &amp; Management System" />
-  <meta property="og:description" content="A connected desktop and mobile system for taskas and preschools with smart attendance, billing, reports, and parent communication." />
-  <link rel="icon" type="image/png" href="logo/javafx%20logo.png" />
-  <link rel="shortcut icon" href="logo/logo.ico" />
-  <link rel="apple-touch-icon" href="logo/javafx%20logo.png" />
+  <meta property="og:title" content="Smart Childcare System - NFC-Based Student Management System" />
+  <meta property="og:description" content="A connected desktop and mobile system for childcare centres and preschools with smart attendance, billing, reports, and parent communication." />
+  <link rel="icon" type="image/png" href="logo/web%20logo.png" />
+  <link rel="shortcut icon" href="logo/web%20logo.png" />
+  <link rel="apple-touch-icon" href="logo/web%20logo.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:opsz,wght@9..144,600;9..144,700&family=Manrope:wght@400;500;600;700;800&display=swap" rel="stylesheet" />
@@ -417,18 +417,6 @@
       margin-bottom: 18px;
     }
 
-    .heritage-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 8px;
-      padding: 8px 14px;
-      border-radius: 999px;
-      background: rgba(36, 122, 75, 0.08);
-      color: var(--green-rich);
-      font-size: 0.86rem;
-      font-weight: 800;
-    }
-
     .hero-copy p.lead {
       margin-top: 22px;
       max-width: 58ch;
@@ -674,6 +662,26 @@
       font-size: 0.86rem;
       font-weight: 900;
       flex-shrink: 0;
+    }
+
+    .list-icon svg,
+    .feature-icon svg,
+    .benefit-icon svg {
+      display: block;
+      width: 16px;
+      height: 16px;
+      stroke: currentColor;
+      stroke-width: 1.85;
+      stroke-linecap: round;
+      stroke-linejoin: round;
+      fill: none;
+      pointer-events: none;
+    }
+
+    .feature-icon svg,
+    .benefit-icon svg {
+      width: 26px;
+      height: 26px;
     }
 
     .summary-bars {
@@ -1434,15 +1442,96 @@
   </style>
 </head>
 <body>
+  <svg aria-hidden="true" focusable="false" style="position:absolute;width:0;height:0;overflow:hidden">
+    <symbol id="icon-contactless" viewBox="0 0 24 24">
+      <rect x="5" y="4" width="14" height="16" rx="3"></rect>
+      <path d="M9 9c1.7-1.7 4.3-1.7 6 0"></path>
+      <path d="M10.5 12c0.8-0.8 2.2-0.8 3 0"></path>
+    </symbol>
+    <symbol id="icon-scan" viewBox="0 0 24 24">
+      <path d="M8 4H6a2 2 0 0 0-2 2v2"></path>
+      <path d="M16 4h2a2 2 0 0 1 2 2v2"></path>
+      <path d="M20 16v2a2 2 0 0 1-2 2h-2"></path>
+      <path d="M4 16v2a2 2 0 0 0 2 2h2"></path>
+      <rect x="7" y="7" width="3" height="3" rx="0.6"></rect>
+      <rect x="14" y="7" width="3" height="3" rx="0.6"></rect>
+      <rect x="7" y="14" width="3" height="3" rx="0.6"></rect>
+      <path d="M14 14h3v3"></path>
+      <rect x="15.5" y="15.5" width="1.5" height="1.5" rx="0.25"></rect>
+    </symbol>
+    <symbol id="icon-chat" viewBox="0 0 24 24">
+      <path d="M6 7h12a2 2 0 0 1 2 2v7a2 2 0 0 1-2 2h-7l-5 3v-3H6a2 2 0 0 1-2-2V9a2 2 0 0 1 2-2z"></path>
+    </symbol>
+    <symbol id="icon-shield" viewBox="0 0 24 24">
+      <path d="M12 3l7 3v5c0 4.5-2.8 7.7-7 10-4.2-2.3-7-5.5-7-10V6l7-3z"></path>
+      <path d="m9.5 12 1.8 1.8 3.7-4"></path>
+    </symbol>
+    <symbol id="icon-folder" viewBox="0 0 24 24">
+      <path d="M3 8.5A2.5 2.5 0 0 1 5.5 6H10l2 2h6.5A2.5 2.5 0 0 1 21 10.5v6A2.5 2.5 0 0 1 18.5 19h-13A2.5 2.5 0 0 1 3 16.5z"></path>
+    </symbol>
+    <symbol id="icon-monitor" viewBox="0 0 24 24">
+      <rect x="4" y="5" width="16" height="11" rx="2"></rect>
+      <path d="M12 16v3"></path>
+      <path d="M8 19h8"></path>
+    </symbol>
+    <symbol id="icon-phone" viewBox="0 0 24 24">
+      <rect x="7" y="3" width="10" height="18" rx="2.5"></rect>
+      <path d="M11 6h2"></path>
+      <circle cx="12" cy="17.5" r="0.8" fill="currentColor" stroke="none"></circle>
+    </symbol>
+    <symbol id="icon-users" viewBox="0 0 24 24">
+      <circle cx="9" cy="8" r="3"></circle>
+      <path d="M4 19v-1a4 4 0 0 1 4-4h2a4 4 0 0 1 4 4v1"></path>
+      <path d="M17 11a3 3 0 1 0 0-6"></path>
+      <path d="M20 19v-1a3 3 0 0 0-2-2.8"></path>
+    </symbol>
+    <symbol id="icon-receipt" viewBox="0 0 24 24">
+      <path d="M7 4h10v16l-2-1.5L13 20l-2-1.5L9 20l-2-1.5L7 20z"></path>
+      <path d="M10 8h4"></path>
+      <path d="M10 12h4"></path>
+      <path d="M10 16h4"></path>
+    </symbol>
+    <symbol id="icon-chart" viewBox="0 0 24 24">
+      <path d="M4 19h16"></path>
+      <path d="M7 15v-4"></path>
+      <path d="M12 15V8"></path>
+      <path d="M17 15v-7"></path>
+    </symbol>
+    <symbol id="icon-refresh" viewBox="0 0 24 24">
+      <path d="M20 7v5h-5"></path>
+      <path d="M4 17v-5h5"></path>
+      <path d="M6.5 9A7 7 0 0 1 19 12"></path>
+      <path d="M17.5 15A7 7 0 0 1 5 12"></path>
+    </symbol>
+    <symbol id="icon-eye" viewBox="0 0 24 24">
+      <path d="M2 12s4-6 10-6 10 6 10 6-4 6-10 6-10-6-10-6z"></path>
+      <circle cx="12" cy="12" r="2.5"></circle>
+    </symbol>
+    <symbol id="icon-zap" viewBox="0 0 24 24">
+      <path d="M13 2 4 14h6l-1 8 9-12h-6l1-8z"></path>
+    </symbol>
+    <symbol id="icon-target" viewBox="0 0 24 24">
+      <circle cx="12" cy="12" r="7"></circle>
+      <circle cx="12" cy="12" r="3"></circle>
+      <path d="M12 3V1"></path>
+      <path d="M12 23v-2"></path>
+      <path d="M3 12H1"></path>
+      <path d="M23 12h-2"></path>
+    </symbol>
+    <symbol id="icon-bell" viewBox="0 0 24 24">
+      <path d="M6 9a6 6 0 0 1 12 0c0 5 2 6 2 6H4s2-1 2-6"></path>
+      <path d="M10 19a2 2 0 0 0 4 0"></path>
+    </symbol>
+  </svg>
   <a class="skip-link" href="#main-content">Skip to content</a>
 
   <header class="site-header">
     <div class="container nav-shell">
-      <a class="brand" href="#top" aria-label="Taska Zurah Student Management System home">
-        <img class="brand-mark" src="logo/javafx%20logo.png" alt="Taska Zurah logo with house outline and caregiver mark" />
+      <a class="brand" href="#top" aria-label="Smart Childcare System - NFC-Based Student Management System home">
+        <img class="brand-mark" src="logo/web%20logo.png" alt="Smart Childcare System logo with house outline and caregiver mark" />
         <span class="brand-copy">
-          <span class="brand-short">TZSMS</span>
-          <span class="brand-long">Taska Zurah Student Management System</span>
+          <span class="brand-short">Smart Childcare</span>
+          <span class="brand-long">Smart Childcare System - NFC-Based Student Management System</span>
         </span>
       </a>
 
@@ -1467,12 +1556,11 @@
         <div class="hero-copy reveal">
           <div class="hero-kicker">
             <span class="eyebrow">Trusted attendance and operations platform for taskas</span>
-            <span class="heritage-badge">Since 2004</span>
           </div>
 
           <h1>Smart Attendance, Billing &amp; Parent Communication for Modern Taskas</h1>
           <p class="lead">Manage attendance, student records, billing, reports, and parent communication in one connected system built for taskas and preschools.</p>
-          <p class="hero-support">TZSMS connects the admin desktop, teacher mobile workflow, and parent mobile access so daily centre operations stay clear, current, and easier to manage.</p>
+          <p class="hero-support">Smart Childcare System connects the admin desktop, teacher mobile workflow, and parent mobile access so daily centre operations stay clear, current, and easier to manage.</p>
 
           <div class="btn-row">
             <a class="btn btn-primary" href="#downloads">Download System</a>
@@ -1495,7 +1583,7 @@
           <article class="scene-card desktop-card">
             <div class="desktop-top">
               <div class="desktop-brand">
-                <img src="logo/javafx%20logo.png" alt="Taska Zurah desktop app logo" />
+                <img src="logo/web%20logo.png" alt="Smart Childcare System desktop app logo" />
                 <div>
                   <div class="desktop-overline">JavaFX desktop admin</div>
                   <div class="desktop-title">Daily control for attendance, records, billing, and reports</div>
@@ -1531,9 +1619,9 @@
                   </div>
                 </div>
                 <ul class="activity-list">
-                  <li><span class="list-icon">N</span><span><strong>NFC attendance scan</strong><br />Check-in recorded with timestamp and role access.</span></li>
-                  <li><span class="list-icon">Q</span><span><strong>QR pickup workflow</strong><br />Pickup status visible to authorised staff and parents.</span></li>
-                  <li><span class="list-icon">C</span><span><strong>Chat and notification support</strong><br />Parents and staff stay aligned without extra manual follow-up.</span></li>
+                  <li><span class="list-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-contactless"></use></svg></span><span><strong>NFC attendance scan</strong><br />Check-in recorded with timestamp and role access.</span></li>
+                  <li><span class="list-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-scan"></use></svg></span><span><strong>QR pickup workflow</strong><br />Pickup status visible to authorised staff and parents.</span></li>
+                  <li><span class="list-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-chat"></use></svg></span><span><strong>Chat and notification support</strong><br />Parents and staff stay aligned without extra manual follow-up.</span></li>
                 </ul>
               </section>
 
@@ -1559,8 +1647,8 @@
                   </div>
                 </div>
                 <ul class="summary-list">
-                  <li><span class="list-icon">A</span><span>Audit-friendly records for attendance history and centre activity.</span></li>
-                  <li><span class="list-icon">R</span><span>Student and parent records kept in one admin view.</span></li>
+                  <li><span class="list-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-shield"></use></svg></span><span>Audit-friendly records for attendance history and centre activity.</span></li>
+                  <li><span class="list-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-folder"></use></svg></span><span>Student and parent records kept in one admin view.</span></li>
                 </ul>
               </aside>
             </div>
@@ -1621,8 +1709,8 @@
 
         <div class="panel solution-panel reveal">
           <span class="eyebrow" style="background:rgba(255,255,255,0.16);color:#fff">Unified solution</span>
-          <h2>Taska Zurah works as one connected operating system for the centre.</h2>
-          <p class="section-copy">TZSMS is built for real taska and preschool operations, with role-based access for admin, teacher, and parent users across desktop and mobile surfaces.</p>
+          <h2>Smart Childcare System works as one connected operating system for the centre.</h2>
+          <p class="section-copy">Smart Childcare System is built for real childcare and preschool operations, with role-based access for admin, teacher, and parent users across desktop and mobile surfaces.</p>
 
           <ul class="role-pills" aria-label="Primary user roles">
             <li>Taska owners</li>
@@ -1654,42 +1742,42 @@
         <div class="section-head center reveal">
           <span class="eyebrow">Built for real daily taska operations, not generic school admin workflows</span>
           <h2>Six core capabilities that keep the centre connected.</h2>
-          <p class="section-copy">Everything here reflects the real Taska Zurah system across the admin desktop, teacher app, and parent app.</p>
+          <p class="section-copy">Everything here reflects the real Smart Childcare System across the admin desktop, teacher app, and parent app.</p>
         </div>
 
         <div class="feature-grid">
           <article class="feature-card reveal">
-            <div class="feature-icon">N</div>
+            <div class="feature-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-contactless"></use></svg></div>
             <h3>Smart Attendance</h3>
             <p>Use NFC attendance scanning together with QR attendance and pickup workflows, then keep every attendance event visible in one shared history.</p>
           </article>
 
           <article class="feature-card reveal">
-            <div class="feature-icon">D</div>
+            <div class="feature-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-monitor"></use></svg></div>
             <h3>Admin Desktop Control</h3>
             <p>The JavaFX desktop admin app gives centre teams one place for the dashboard, student and parent records, billing, invoices, and reporting.</p>
           </article>
 
           <article class="feature-card reveal">
-            <div class="feature-icon">T</div>
+            <div class="feature-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-phone"></use></svg></div>
             <h3>Teacher Mobile Workflow</h3>
             <p>The teacher mobile app supports classroom-side attendance work and QR tools, helping staff manage routine actions without returning to the office.</p>
           </article>
 
           <article class="feature-card reveal">
-            <div class="feature-icon">P</div>
+            <div class="feature-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-users"></use></svg></div>
             <h3>Parent Access</h3>
             <p>The parent mobile app gives families attendance visibility together with notifications and chat support from the same connected system.</p>
           </article>
 
           <article class="feature-card reveal">
-            <div class="feature-icon">B</div>
+            <div class="feature-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-receipt"></use></svg></div>
             <h3>Billing &amp; Invoicing</h3>
             <p>Keep billing and invoice support alongside attendance and records so finance work stays aligned with daily centre operations.</p>
           </article>
 
           <article class="feature-card reveal">
-            <div class="feature-icon">R</div>
+            <div class="feature-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-chart"></use></svg></div>
             <h3>Reports &amp; Audit Trail</h3>
             <p>Use daily and monthly reports, attendance history, and audit-friendly records to review activity clearly and answer questions with confidence.</p>
           </article>
@@ -1731,17 +1819,17 @@
       <div class="container">
         <div class="section-head center reveal">
           <span class="eyebrow">Download hub</span>
-          <h2>Download the Full Taska Zurah System</h2>
+          <h2>Download the Full Smart Childcare System</h2>
           <p class="section-copy">Choose the role-based app or package you need. These buttons point to the real files already included with this project.</p>
         </div>
 
         <div class="download-grid">
           <article class="download-card featured reveal">
             <div class="download-top">
-              <img class="download-logo" src="logo/javafx%20logo.png" alt="Taska Zurah logo for the admin desktop package" />
+              <img class="download-logo" src="logo/web%20logo.png" alt="Smart Childcare System logo for the admin desktop package" />
               <div>
                 <div class="download-overline">Admin Desktop</div>
-                <div class="download-title">Taska Attendance System.zip</div>
+                <div class="download-title">Taska Attendance System.exe</div>
               </div>
             </div>
             <p>For management, reporting, records, and billing control.</p>
@@ -1751,11 +1839,11 @@
               <span class="file-badge">315 MB</span>
             </div>
             <ul class="download-list">
-              <li><span class="list-icon">A</span><span>Central admin dashboard with student and parent records.</span></li>
-              <li><span class="list-icon">B</span><span>Billing, invoice support, and daily or monthly reporting from one desktop surface.</span></li>
+              <li><span class="list-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-monitor"></use></svg></span><span>Central admin dashboard with student and parent records.</span></li>
+              <li><span class="list-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-receipt"></use></svg></span><span>Billing, invoice support, and daily or monthly reporting from one desktop surface.</span></li>
             </ul>
             <div class="download-spacer"></div>
-            <a class="btn btn-primary" href="System/Taska%20Attendance%20System.zip" download="Taska Attendance System.zip">Download Desktop Package</a>
+            <a class="btn btn-primary" href="System/Taska%20Attendance%20System.zip" download="Smart Childcare System - NFC-Based Student Management System.zip">Download Desktop Package</a>
           </article>
 
           <article class="download-card reveal">
@@ -1773,8 +1861,8 @@
               <span class="file-badge">27.5 MB</span>
             </div>
             <ul class="download-list">
-              <li><span class="list-icon">Q</span><span>QR attendance and pickup actions for daily classroom routines.</span></li>
-              <li><span class="list-icon">S</span><span>Real-time updates that keep teachers aligned with the admin side of the system.</span></li>
+              <li><span class="list-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-scan"></use></svg></span><span>QR attendance and pickup actions for daily classroom routines.</span></li>
+              <li><span class="list-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-refresh"></use></svg></span><span>Real-time updates that keep teachers aligned with the admin side of the system.</span></li>
             </ul>
             <div class="download-spacer"></div>
             <a class="btn btn-secondary" href="System/TZ%20Teacher.apk" download="TZ Teacher.apk">Download Teacher APK</a>
@@ -1795,8 +1883,8 @@
               <span class="file-badge">28.4 MB</span>
             </div>
             <ul class="download-list">
-              <li><span class="list-icon">P</span><span>Parents can review attendance information from the same live record used by the centre.</span></li>
-              <li><span class="list-icon">C</span><span>Notifications and chat support help keep family communication close to the daily workflow.</span></li>
+              <li><span class="list-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-eye"></use></svg></span><span>Parents can review attendance information from the same live record used by the centre.</span></li>
+              <li><span class="list-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-chat"></use></svg></span><span>Notifications and chat support help keep family communication close to the daily workflow.</span></li>
             </ul>
             <div class="download-spacer"></div>
             <a class="btn btn-secondary" href="System/TZ%20Parent.apk" download="TZ Parent.apk">Download Parent APK</a>
@@ -1810,7 +1898,7 @@
         <div class="section-head reveal">
           <span class="eyebrow">Operational benefits</span>
           <h2>Built to reduce repetitive admin work while keeping the whole centre informed.</h2>
-          <p class="section-copy">TZSMS helps owners, operators, staff, and parents work from the same connected flow instead of maintaining separate records for the same day.</p>
+          <p class="section-copy">Smart Childcare System helps owners, operators, staff, and parents work from the same connected flow instead of maintaining separate records for the same day.</p>
 
           <ul class="benefit-list">
             <li><span class="list-icon">1</span><span>Reduce manual attendance work during busy arrival and pickup windows.</span></li>
@@ -1823,25 +1911,25 @@
 
         <div class="benefits-grid">
           <article class="benefit-card reveal">
-            <div class="benefit-icon">M</div>
+            <div class="benefit-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-zap"></use></svg></div>
             <h3>Less manual work</h3>
             <p>Attendance capture, reporting, and billing live in the same operating flow.</p>
           </article>
 
           <article class="benefit-card reveal">
-            <div class="benefit-icon">A</div>
+            <div class="benefit-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-target"></use></svg></div>
             <h3>Better accuracy</h3>
             <p>Shared records reduce mismatched entries between classroom, office, and parent view.</p>
           </article>
 
           <article class="benefit-card reveal">
-            <div class="benefit-icon">F</div>
+            <div class="benefit-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-bell"></use></svg></div>
             <h3>Families stay updated</h3>
             <p>Parents see attendance information and receive communication through the app built for them.</p>
           </article>
 
           <article class="benefit-card reveal">
-            <div class="benefit-icon">B</div>
+            <div class="benefit-icon"><svg aria-hidden="true" viewBox="0 0 24 24"><use href="#icon-receipt"></use></svg></div>
             <h3>Billing stays central</h3>
             <p>Invoices and finance-related records remain close to the core student management workflow.</p>
           </article>
@@ -1860,7 +1948,7 @@
           <article class="faq-item reveal">
             <details>
               <summary>Does the system support NFC and QR attendance?</summary>
-              <div class="faq-answer">Yes. TZSMS supports NFC attendance scanning together with QR attendance and pickup workflows, so centres can use the process that fits each part of the day.</div>
+              <div class="faq-answer">Yes. Smart Childcare System supports NFC attendance scanning together with QR attendance and pickup workflows, so centres can use the process that fits each part of the day.</div>
             </details>
           </article>
 
@@ -1900,7 +1988,7 @@
         <div class="reveal">
           <span class="eyebrow" style="background:rgba(255,255,255,0.16);color:#fff">Ready when you are</span>
           <h2>Ready to run your taska with less manual work?</h2>
-          <p class="section-copy">Download the right package for your role and see how TZSMS supports daily taska operations across admin, teacher, and parent use.</p>
+          <p class="section-copy">Download the right package for your role and see how Smart Childcare System supports daily childcare operations across admin, teacher, and parent use.</p>
 
           <div class="btn-row">
             <a class="btn btn-primary" href="#downloads">Download System</a>
@@ -1921,11 +2009,10 @@
       <div class="footer-grid">
         <article class="footer-card reveal">
           <div class="footer-brand">
-            <img src="logo/javafx%20logo.png" alt="Taska Zurah logo" />
+            <img src="logo/web%20logo.png" alt="Smart Childcare System logo" />
             <div>
-              <h3>Taska Zurah Student Management System</h3>
+              <h3>Smart Childcare System - NFC-Based Student Management System</h3>
               <p>Warm, practical centre management for taskas and preschools with smart attendance, reporting, billing, and parent communication.</p>
-              <p><strong>Since 2004</strong></p>
             </div>
           </div>
         </article>
@@ -1946,7 +2033,7 @@
         <article class="footer-card reveal">
           <div class="footer-title">Downloads</div>
           <ul class="footer-links">
-            <li><a href="System/Taska%20Attendance%20System.zip" download="Taska Attendance System.zip">Admin Desktop</a></li>
+            <li><a href="System/Taska%20Attendance%20System.zip" download="Smart Childcare System - NFC-Based Student Management System.zip">Admin Desktop</a></li>
             <li><a href="System/TZ%20Teacher.apk" download="TZ Teacher.apk">Teacher App</a></li>
             <li><a href="System/TZ%20Parent.apk" download="TZ Parent.apk">Parent App</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
@@ -1955,8 +2042,8 @@
       </div>
 
       <div class="footer-bottom">
-        <span>&copy; 2026 Taska Zurah. Since 2004.</span>
-        <span>TZSMS for taska owners, preschool operators, staff, teachers, and parents.</span>
+        <span>&copy; 2026 Smart Childcare System.</span>
+        <span>Smart Childcare System for childcare owners, preschool operators, staff, teachers, and parents.</span>
       </div>
     </div>
   </footer>
