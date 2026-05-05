@@ -1362,6 +1362,165 @@
       }
     }
 
+    @media (max-width: 900px) {
+      section[id] {
+        scroll-margin-top: 24px;
+      }
+
+      .site-header {
+        position: static;
+      }
+
+      .nav-shell {
+        gap: 18px;
+        padding: 14px 0 18px;
+      }
+
+      .brand {
+        width: 100%;
+        justify-content: center;
+      }
+
+      .brand-mark {
+        width: 78px;
+      }
+
+      .brand-short {
+        font-size: 0.78rem;
+      }
+
+      .site-nav {
+        gap: 12px;
+      }
+
+      .nav-links {
+        display: grid;
+        grid-template-columns: repeat(2, minmax(0, 1fr));
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+
+      .nav-links a {
+        width: 100%;
+        padding: 11px 12px;
+        background: rgba(255, 255, 255, 0.78);
+        border: 1px solid rgba(36, 122, 75, 0.08);
+      }
+
+      .header-actions,
+      .header-actions .btn {
+        width: 100%;
+      }
+
+      .hero {
+        padding: 56px 0 68px;
+      }
+
+      .hero-grid {
+        gap: 30px;
+      }
+
+      h1 {
+        max-width: none;
+        font-size: clamp(2.35rem, 10vw, 3.6rem);
+      }
+
+      h2 {
+        font-size: clamp(1.85rem, 7vw, 2.75rem);
+      }
+
+      .eyebrow {
+        font-size: 0.72rem;
+        letter-spacing: 0.05em;
+      }
+
+      .pill-row {
+        gap: 8px;
+      }
+
+      .pill {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .preview-badges,
+      .preview-badges.align-start {
+        justify-content: center;
+      }
+
+      .floating-tag {
+        width: 100%;
+        justify-content: center;
+        text-align: center;
+      }
+
+      .desktop-card,
+      .panel,
+      .feature-card,
+      .download-card,
+      .benefit-card,
+      .step-card,
+      .footer-card,
+      .cta-note {
+        padding: 22px;
+      }
+
+      .desktop-card::before {
+        inset: 10px;
+        border-radius: 22px;
+      }
+
+      .desktop-top,
+      .desktop-brand,
+      .map-item,
+      .footer-brand {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      .live-pill {
+        white-space: normal;
+      }
+
+      .desktop-brand img,
+      .footer-brand img {
+        width: 72px;
+      }
+
+      .desktop-title {
+        font-size: 1.05rem;
+      }
+
+      .desktop-metrics,
+      .desktop-layout,
+      .phone-stack,
+      .benefits-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .card-head,
+      .download-top {
+        align-items: flex-start;
+      }
+
+      .map-item span {
+        text-align: left;
+      }
+
+      .cta-band {
+        padding: 72px 0;
+      }
+
+      .cta-shell {
+        gap: 18px;
+      }
+
+      .footer-bottom {
+        flex-direction: column;
+        align-items: flex-start;
+      }
+    }
+
     @media (max-width: 720px) {
       .section {
         padding: 76px 0;
@@ -1376,32 +1535,62 @@
       }
 
       .brand-mark {
-        width: 96px;
+        width: 68px;
       }
 
       .feature-grid,
       .download-grid,
-      .benefits-grid,
       .how-grid,
-      .desktop-metrics,
-      .desktop-layout,
       .footer-grid {
         grid-template-columns: 1fr;
       }
 
-      .phone-stack {
-        display: grid;
+      .nav-links {
         grid-template-columns: 1fr;
       }
 
-      .phone-card,
-      .phone-card.secondary {
-        width: 100%;
-        transform: none;
+      .hero {
+        padding: 46px 0 56px;
       }
 
-      .floating-tag {
-        justify-content: center;
+      h1 {
+        font-size: clamp(2rem, 12vw, 2.9rem);
+      }
+
+      .hero-copy p.lead {
+        font-size: 1rem;
+      }
+
+      .hero-support,
+      .section-copy,
+      .feature-card p,
+      .benefit-card p,
+      .step-card p,
+      .download-card p,
+      .faq-answer {
+        font-size: 0.94rem;
+      }
+
+      .desktop-brand,
+      .footer-brand {
+        gap: 12px;
+      }
+
+      .metric-card {
+        padding: 16px;
+      }
+
+      .metric-value {
+        font-size: 1.5rem;
+      }
+
+      .file-meta {
+        gap: 6px;
+      }
+
+      .file-badge {
+        font-size: 0.74rem;
+        padding: 7px 10px;
       }
 
       .btn-row,
@@ -1420,7 +1609,96 @@
       .benefit-card,
       .step-card,
       .footer-card {
-        padding: 24px;
+        padding: 20px;
+      }
+
+      .faq-item summary {
+        padding: 20px;
+        align-items: flex-start;
+      }
+
+      .faq-answer {
+        padding: 0 20px 20px;
+      }
+    }
+
+    @media (max-width: 560px) {
+      .container {
+        width: min(var(--container), calc(100% - 20px));
+      }
+
+      .section {
+        padding: 60px 0;
+      }
+
+      .nav-shell {
+        gap: 14px;
+      }
+
+      .brand {
+        justify-content: flex-start;
+      }
+
+      .brand-mark {
+        width: 60px;
+      }
+
+      .brand-short {
+        font-size: 0.7rem;
+        letter-spacing: 0.08em;
+      }
+
+      .nav-links a,
+      .btn,
+      .header-actions .btn {
+        padding: 13px 16px;
+      }
+
+      .eyebrow {
+        width: 100%;
+        justify-content: flex-start;
+      }
+
+      .hero-kicker {
+        gap: 10px;
+      }
+
+      .desktop-card,
+      .panel,
+      .feature-card,
+      .download-card,
+      .benefit-card,
+      .step-card,
+      .footer-card,
+      .cta-note {
+        padding: 18px;
+      }
+
+      .desktop-top,
+      .card-head {
+        gap: 10px;
+      }
+
+      .live-pill,
+      .floating-tag {
+        font-size: 0.8rem;
+      }
+
+      .phone-card {
+        padding: 12px;
+        border-radius: 24px;
+      }
+
+      .phone-head {
+        gap: 10px;
+      }
+
+      .mini-list li {
+        padding: 10px;
+      }
+
+      .footer-bottom {
+        font-size: 0.84rem;
       }
     }
 
