@@ -930,6 +930,29 @@
       border-color: rgba(36, 122, 75, 0.18);
     }
 
+    .qr-code-container {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .qr-code-image {
+      width: 150px;
+      height: 150px;
+      padding: 12px;
+      border: 2px solid rgba(36, 122, 75, 0.2);
+      border-radius: 12px;
+      background: #fff;
+    }
+
+    .qr-code-label {
+      font-size: 0.85rem;
+      color: var(--ink-soft);
+      font-weight: 600;
+      margin: 0;
+    }
+
     .feature-icon,
     .benefit-icon,
     .step-number {
@@ -2316,6 +2339,14 @@
             <li><a href="https://drive.google.com/uc?export=download&id=1RgGOotNl-iy0FeDx7Acd3v8RRN8B_BWc" target="_blank" rel="noopener noreferrer">Parent App</a></li>
             <li><a href="#how-it-works">How It Works</a></li>
           </ul>
+        </article>
+
+        <article class="footer-card reveal">
+          <div class="footer-title">Quick Access</div>
+          <div class="qr-code-container">
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Ftzsms.my" alt="QR code to Smart Childcare System website" class="qr-code-image" />
+            <p class="qr-code-label">Scan to visit</p>
+          </div>
         </article>
       </div>
 
