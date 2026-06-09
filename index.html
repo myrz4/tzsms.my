@@ -944,6 +944,12 @@
       border: 2px solid rgba(36, 122, 75, 0.2);
       border-radius: 12px;
       background: #fff;
+      cursor: zoom-in;
+      transition: transform var(--transition);
+    }
+
+    .qr-code-image:hover {
+      transform: scale(1.03);
     }
 
     .qr-code-label {
@@ -951,6 +957,66 @@
       color: var(--ink-soft);
       font-weight: 600;
       margin: 0;
+    }
+
+    .qr-modal {
+      position: fixed;
+      inset: 0;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: 32px;
+      background: rgba(0, 0, 0, 0.65);
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity var(--transition);
+      z-index: 120;
+    }
+
+    .qr-modal.is-open {
+      opacity: 1;
+      pointer-events: auto;
+    }
+
+    .qr-modal-content {
+      position: relative;
+      max-width: 96vw;
+      max-height: 96vh;
+      padding: 24px;
+      border-radius: 28px;
+      background: #fff;
+      box-shadow: 0 32px 80px rgba(0, 0, 0, 0.28);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 18px;
+    }
+
+    .qr-modal-content img {
+      width: min(420px, 90vw);
+      height: auto;
+      border-radius: 20px;
+      border: 1px solid rgba(36, 122, 75, 0.12);
+      background: #fff;
+    }
+
+    .qr-modal-close {
+      position: absolute;
+      top: 18px;
+      right: 18px;
+      width: 40px;
+      height: 40px;
+      border: none;
+      border-radius: 50%;
+      background: rgba(36, 122, 75, 0.12);
+      color: var(--green-rich);
+      font-size: 1.1rem;
+      font-weight: 800;
+      cursor: pointer;
+    }
+
+    .qr-modal-close:hover {
+      background: rgba(36, 122, 75, 0.18);
     }
 
     .feature-icon,
@@ -2344,10 +2410,18 @@
         <article class="footer-card reveal">
           <div class="footer-title">Quick Access</div>
           <div class="qr-code-container">
-            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Ftzsms.my" alt="QR code to Smart Childcare System website" class="qr-code-image" />
-            <p class="qr-code-label">Scan to visit</p>
+            <img src="https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=https%3A%2F%2Ftzsms.my" alt="QR code to Smart Childcare System website" class="qr-code-image" id="qrPreview" />
+            <p class="qr-code-label">Scan to visit or click to enlarge</p>
           </div>
         </article>
+      </div>
+
+      <div class="qr-modal" id="qrModal" aria-hidden="true" role="dialog" aria-modal="true" aria-label="QR code preview">
+        <div class="qr-modal-content">
+          <button class="qr-modal-close" id="qrCloseButton" aria-label="Close QR preview">×</button>
+          <img src="https://api.qrserver.com/v1/create-qr-code/?size=500x500&data=https%3A%2F%2Ftzsms.my" alt="Enlarged QR code to Smart Childcare System website" />
+          <p class="qr-code-label">Scan this larger code with your phone.</p>
+        </div>
       </div>
 
       <div class="footer-bottom">
@@ -2379,6 +2453,33 @@
 
       document.querySelectorAll(".reveal").forEach(function (element) {
         observer.observe(element);
+      });
+
+      var qrTrigger = document.getElementById("qrPreview");
+      var qrModal = document.getElementById("qrModal");
+      var qrClose = document.getElementById("qrCloseButton");
+
+      function openQrModal() {
+        qrModal.classList.add("is-open");
+        qrModal.setAttribute("aria-hidden", "false");
+      }
+
+      function closeQrModal() {
+        qrModal.classList.remove("is-open");
+        qrModal.setAttribute("aria-hidden", "true");
+      }
+
+      qrTrigger.addEventListener("click", openQrModal);
+      qrClose.addEventListener("click", closeQrModal);
+      qrModal.addEventListener("click", function (event) {
+        if (event.target === qrModal) {
+          closeQrModal();
+        }
+      });
+      document.addEventListener("keydown", function (event) {
+        if (event.key === "Escape" && qrModal.classList.contains("is-open")) {
+          closeQrModal();
+        }
       });
     }());
   </script>
